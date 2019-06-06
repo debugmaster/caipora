@@ -11,7 +11,7 @@ const logLevels = {
 };
 
 function _log(level, args) {
-    if (args[0] && args.length === 1 && typeof (args[0]) === "function") {
+    if (args.length === 1 && typeof (args[0]) === "function") {
         const computedArgs = args[0].call(undefined);
         if (Array.isArray(computedArgs)) {
             _console[level].apply(undefined, computedArgs);
