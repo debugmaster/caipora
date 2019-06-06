@@ -1,8 +1,8 @@
 {
   "name": "caipora",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Replacement of Node.js Console with log levels",
-  "main": "index.js",
+  "main": "caipora.js",
   "scripts": {
     "test": "nyc mocha --require ts-node/register 'test/**/*.test.ts'"
   },
