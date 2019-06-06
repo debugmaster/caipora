@@ -15,6 +15,7 @@
     "log",
     "level"
   ],
+  "dependencies": {},
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.14.8",
@@ -22,5 +23,13 @@
     "nyc": "^14.1.1",
     "ts-node": "^8.2.0",
     "typescript": "^3.5.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/debugmaster/caipora.git"
+  },
+  "bugs": {
+    "url": "https://github.com/debugmaster/caipora/issues"
+  },
+  "homepage": "https://github.com/debugmaster/caipora#readme"
 }
