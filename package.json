@@ -1,0 +1,21 @@
+{
+  "name": "caipora",
+  "version": "1.0.0",
+  "description": "Replacement of Node.js Console with log levels",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc mocha --require ts-node/register 'test/**/*.test.ts'"
+  },
+  "author": "Camilo",
+  "license": "MIT",
+  "keywords": [
+    "console",
+    "logging",
+    "logger",
+    "log",
+    "level"
+  ],
+  "devDependencies": {
+    "@types/node": "^10.14.8"
+  }
+}
