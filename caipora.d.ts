@@ -5,10 +5,11 @@ type LogLevel = "trace" | "debug" | "info" | "warn" | "error" | "silent";
 declare namespace Caipora {
     /**
      * A simple assertion test that verifies whether `condition` is truthy.
-     * If it is not, an `AssertionError` is thrown.
+     * If it is not, an `AssertionError` is printed.
      * If provided, the error `message` is formatted using `util.format()` and used as the error message.
      */
-    function assert(condition?: boolean, message?: string, ...optionalParams: any[]): void;
+    function assert(condition: boolean): void;
+    function assert(condition: boolean, message: string, ...optionalParams: any[]): void;
     /**
      * When `stdout` is a TTY, calling `console.clear()` will attempt to clear the TTY.
      * When `stdout` is not a TTY, this method does nothing.

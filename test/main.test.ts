@@ -53,7 +53,7 @@ describe("Caipora", () => {
         };
     });
 
-    after(() => revert())
+    after(() => revert());
 
     beforeEach(() => {
         stdout = stderr = Result.NONE;

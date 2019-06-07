@@ -23,7 +23,7 @@ describe("Performance", () => {
         };
     });
 
-    after(() => revert())
+    after(() => revert());
 
     it('should be more performatic than console if log level is disabled', () => {
         let consoleDelta = Date.now();
@@ -76,6 +76,7 @@ describe("Performance", () => {
         }
         lazyDelta = Date.now() - lazyDelta;
 
-        assert.ok(eagerDelta < lazyDelta, "eager evaluation took longer than lazy evaluation");
+        // In this case, they may occasionally have the same delta
+        assert.ok(eagerDelta <= lazyDelta, "eager evaluation took longer than lazy evaluation");
     });
 });
