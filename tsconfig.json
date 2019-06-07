@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "es3",
     "module": "commonjs",
-    "strict": false
+    "strict": true,
+    "strictBindCallApply": false
   },
   "include": [
     "**/*.ts"
