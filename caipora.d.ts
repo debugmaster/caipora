@@ -11,6 +11,15 @@ interface CaiporaConstructor {
 }
 
 interface Caipora {
+    /**
+     *  The Caipora class can be used to create a simple logger with configurable output streams.
+     *  The default log level follows the
+     */
+    Caipora: CaiporaConstructor;
+    /**
+     * This is an alias of {@link Caipora} class. It is not the same as {@link console.Console}.
+     * It is exported for compatibility reasons.
+     */
     Console: CaiporaConstructor;
     /**
      * A simple assertion test that verifies whether `condition` is truthy.
@@ -47,7 +56,7 @@ interface Caipora {
      */
     dir(obj: any, options?: NodeJS.InspectOptions): void;
     /**
-     * This method calls {@link caipora.log()} passing it the arguments received. Please note that this method does not produce any XML formatting
+     * This method calls {@link console.log()} passing it the arguments received. Please note that this method does not produce any XML formatting
      */
     dirxml(...data: any[]): void;
     /**

@@ -16,7 +16,7 @@ Reflect.ownKeys(constructor.Caipora.prototype).forEach(function (prop) {
     Reflect.defineProperty(caipora, prop, desc);
 });
 
-caipora.Console = constructor.Caipora;
+caipora.Console = caipora.Caipora = constructor.Caipora;
 
 constructor.init(caipora);
 
