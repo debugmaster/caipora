@@ -57,10 +57,10 @@ let complexObject = {
     timestamp: 123456123
 };
 console.error(() => JSON.stringify(complexObject));
-// It outputs '{"id":"ab23af96","timestamp":123456123}' on STDOUT
+// It outputs '{"id":"ab23af96","timestamp":123456123}' on STDERR
 
 console.error(() => ["Failed for %s", JSON.stringify(complexObject)]);
-// It outputs 'Failed for {"id":"ab23af96","timestamp":123456123}.' on STDOUT
+// It outputs 'Failed for {"id":"ab23af96","timestamp":123456123}.' on STDERR
 ```
 
 ## License
