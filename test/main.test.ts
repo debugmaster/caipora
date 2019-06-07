@@ -71,6 +71,16 @@ describe("Caipora", () => {
         assert.strictEqual(caipora.getLevel(), "info");
     });
 
+    it ("should be able to create multiple loggers", () => {
+        const anotherCaipora = new caipora.Caipora({
+            stdout: process.stdout,
+            stderr: process.stderr
+        });
+
+        anotherCaipora.setLevel("silent");
+        assert.notStrictEqual(anotherCaipora.getLevel(), caipora.getLevel());
+    });
+
     describe("signatures", () => {
 
         it ("allow multiple params", () => {
