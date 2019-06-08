@@ -23,7 +23,7 @@ import * as console from "caipora";
 
 By default, caipora will set the log level to `info`. You have two ways to change the current log level:
 - Calling `console.setLevel(level)`;
-- Setting `LOG_LEVEL` environment variable;
+- Setting `LOG_LEVEL` environment variable to your application;
 
 You can get the current log level by calling `console.getLevel()`.
 
@@ -36,15 +36,27 @@ console.setLevel("debug"); // It changed log level from "info" to "debug"
 console.debug("Hello World!"); // It outputs "Hello World!\n" on STDOUT
 ```
 
-Please note that setting the log level will affect all messages logged with caipora regardless of which part of your application set it.
+### Customizing outputs
+
+If you want to output to different streams (such as files), you should create a new instance of caipora with `Caipora`. If you wonder how the constructors that are available, you should look at [Console](https://nodejs.org/docs/latest-v10.x/api/console.html#console_class_console).
+
+For example:
+```es6
+import * as console from "caipora";
+
+let errorLogger = new console.Caipora(process.stderr);
+errorLogger.log("This message will go to the error log.");
+```
+
+For compatibility reasons, caipora also export a `Console` class, but it is just an alias to `Caipora`.
 
 ### console.log()
 
-If you want a message to be logged regardless of the current log level, you should use `console.log()`. It will print **even** if the log level is `silent`.
+If you want a message to be logged regardless of the current log level, you should use `console.log()`. It will print **even** if the current log level is `silent`.
 
 ## Additional features
 
-Caipora does introduce lazily-evaluated log messages. It is recommended for any message that contains CPU-intensive computed parameters.
+Caipora does introduce lazy evaluation to log messages. It is recommended for any message that contains CPU-intensive computed parameters.
 
 In order to use this, pass a function that returns either a value or an array of values. It does support formatted messages when an array is used.
 
