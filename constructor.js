@@ -44,19 +44,19 @@ function _log(level, args) {
     if (args.length === 1 && typeof (args[0]) === "function") {
         const computedArgs = args[0].call(undefined);
         if (Array.isArray(computedArgs)) {
-            _console[level].apply(undefined, computedArgs);
+            _console.Console.prototype[level].apply(this, computedArgs);
         } else {
-            _console[level].apply(undefined, [computedArgs])
+            _console.Console.prototype[level].apply(this, [computedArgs])
         }
     }
     else {
-        _console[level].apply(undefined, args);
+        _console.Console.prototype[level].apply(this, args);
     }
 }
 
 function _logIfEnabled(level, args) {
     if (this._logLevels[level])
-        _log(level, args);
+        _log.bind(this)(level, args);
 }
 
 ["trace", "debug", "info", "warn", "error"].forEach(function (level) {
