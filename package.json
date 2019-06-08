@@ -1,6 +1,6 @@
 {
   "name": "caipora",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Replacement of Node.js Console with log levels",
   "main": "caipora.js",
   "scripts": {
