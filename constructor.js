@@ -40,33 +40,36 @@ Caipora.prototype.getLevel = function () {
         "silent"
 };
 
-function _log(level, args) {
-    if (args.length === 1 && typeof (args[0]) === "function") {
-        const computedArgs = args[0].call(undefined);
-        if (Array.isArray(computedArgs)) {
-            _console.Console.prototype[level].apply(this, computedArgs);
-        } else {
-            _console.Console.prototype[level].apply(this, [computedArgs])
+Object.defineProperty(Caipora.prototype, '_log', {
+    value: function (level, args) {
+        if (args.length === 1 && typeof (args[0]) === "function") {
+            const computedArgs = args[0].call(undefined);
+            if (Array.isArray(computedArgs)) {
+                _console.Console.prototype[level].apply(this, computedArgs);
+            } else {
+                _console.Console.prototype[level].apply(this, [computedArgs])
+            }
+        }
+        else {
+            _console.Console.prototype[level].apply(this, args);
         }
     }
-    else {
-        _console.Console.prototype[level].apply(this, args);
-    }
-}
+});
 
-function _logIfEnabled(level, args) {
-    if (this._logLevels[level])
-        _log.bind(this)(level, args);
-}
+Object.defineProperty(Caipora.prototype, '_logIfEnabled', {
+    value: function (level, args) {
+        if (this._logLevels[level]) this._log(level, args);
+    }
+});
 
 ["trace", "debug", "info", "warn", "error"].forEach(function (level) {
     Caipora.prototype[level] = function () {
-        _logIfEnabled.bind(this)(level, arguments);
+        this._logIfEnabled(level, arguments);
     };
 });
 
 Caipora.prototype.log = function () {
-    _log.bind(this)("info", arguments);
+    this._log("info", arguments);
 }
 
 module.exports = {
