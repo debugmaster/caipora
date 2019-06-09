@@ -6,7 +6,7 @@ type LogLevel = "trace" | "debug" | "info" | "warn" | "error" | "silent";
 
 interface CaiporaConstructor {
     prototype: Caipora;
-    new(stdout: WritableStream, stderr?: WritableStream, ignoreErrors?: boolean): Caipora;
+    new(stdout: NodeJS.WritableStream, stderr?: NodeJS.WritableStream, ignoreErrors?: boolean): Caipora;
     new(options: NodeJS.ConsoleConstructorOptions): Caipora;
 }
 
