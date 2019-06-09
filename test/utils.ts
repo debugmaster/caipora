@@ -1,6 +1,6 @@
 type ActionCallback = (args: IArguments) => void;
 type ConditionCallback = (args: IArguments) => boolean;
-type RevertCallback = () => void;
+export type RevertCallback = () => void;
 
 function captureOutput(
     output: NodeJS.WritableStream,

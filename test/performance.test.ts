@@ -4,7 +4,7 @@ import * as utils from "./utils";
 
 describe("Performance", () => {
 
-    let revert: () => void;
+    let revert: utils.RevertCallback;
 
     before(() => {
         const revertStdOut = utils.captureStdOut(

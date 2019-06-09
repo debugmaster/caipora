@@ -1,4 +1,5 @@
 import * as assert from "assert";
+import { RevertCallback } from "./utils";
 
 function loadCaipora() {
     delete require.cache[require.resolve("../caipora")];
@@ -14,7 +15,7 @@ describe("Compatiblity", () => {
     describe("v6", () => {
 
         it("should not define caipora.debug()", () => {
-            let revert: undefined | (() => void);
+            let revert: undefined | RevertCallback;
             // Remove Console.debug() in other node versions
             if (!process.version.startsWith('v6')) {
                 let debugGlobal = console.debug;

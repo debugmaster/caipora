@@ -13,7 +13,7 @@ describe("Caipora", () => {
     let stdout: Result;
     let stderr: Result;
 
-    let revert: () => void;
+    let revert: utils.RevertCallback;
     let printedValue: string;
 
     /**
@@ -116,7 +116,7 @@ describe("Caipora", () => {
 
     describe("set/get log level", () => {
 
-        let revertLevel: () => void;
+        let revertLevel: utils.RevertCallback;
         before(() => {
             const defaultLevel = caipora.getLevel();
             revertLevel = () => caipora.setLevel(defaultLevel);
