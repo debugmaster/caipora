@@ -1,3 +1,4 @@
 test
 tsconfig.json
 .nyc_output
+.vscode
