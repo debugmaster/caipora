@@ -33,13 +33,13 @@ describe("Performance", () => {
 
     it('should be more performatic than console if log level is disabled', () => {
         let consoleDelta = Date.now();
-        for (let i=0; i < 1000; i++) {
+        for (let i=0; i < 100000; i++) {
             console.info("test");
         }
         consoleDelta = Date.now() - consoleDelta;
 
         let caiporaDelta = Date.now();
-        for (let i=0; i < 1000; i++) {
+        for (let i=0; i < 100000; i++) {
             caipora.info();
         }
         caiporaDelta = Date.now() - caiporaDelta;
@@ -49,7 +49,7 @@ describe("Performance", () => {
 
     it('should be more performatic if complex parameters are lazily evaluated', () => {
         let eagerDelta = Date.now();
-        for (let i=0; i < 10000; i++) {
+        for (let i=0; i < 100000; i++) {
             caipora.info(JSON.stringify({
                 i,
                 max: 10000
@@ -58,7 +58,7 @@ describe("Performance", () => {
         eagerDelta = Date.now() - eagerDelta;
 
         let lazyDelta = Date.now();
-        for (let i=0; i < 10000; i++) {
+        for (let i=0; i < 100000; i++) {
             caipora.info(() => JSON.stringify({
                 i,
                 max: 10000
@@ -71,13 +71,13 @@ describe("Performance", () => {
 
     it('should not be more performatic if simple parameters are lazily evaluated', () => {
         let eagerDelta = Date.now();
-        for (let i=0; i < 10000; i++) {
+        for (let i=0; i < 100000; i++) {
             caipora.info("test");
         }
         eagerDelta = Date.now() - eagerDelta;
 
         let lazyDelta = Date.now();
-        for (let i=0; i < 10000; i++) {
+        for (let i=0; i < 100000; i++) {
             caipora.info(() => "test");
         }
         lazyDelta = Date.now() - lazyDelta;
