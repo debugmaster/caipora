@@ -73,10 +73,9 @@ describe("Caipora", () => {
     });
 
     it ("should be able to create multiple loggers", () => {
-        const anotherCaipora = new caipora.Caipora({
-            stdout: process.stdout,
-            stderr: process.stderr
-        });
+        const anotherCaipora = new caipora.Caipora(
+            process.stdout
+        );
 
         anotherCaipora.setLevel("silent");
         assert.notStrictEqual(anotherCaipora.getLevel(), caipora.getLevel());
@@ -117,9 +116,13 @@ describe("Caipora", () => {
 
     describe("set/get log level", () => {
 
-        const DEFAULT_LEVEL = caipora.getLevel();
+        let revertLevel: () => void;
+        before(() => {
+            const defaultLevel = caipora.getLevel();
+            revertLevel = () => caipora.setLevel(defaultLevel);
+        });
 
-        after(() => caipora.setLevel(DEFAULT_LEVEL));
+        after(() => revertLevel());
 
         describe("silent level", () => {
 

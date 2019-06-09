@@ -20,7 +20,13 @@ describe("Performance", () => {
             false
         );
 
-        revert = revertStdOut;
+        const defaultLevel = caipora.getLevel();
+        caipora.setLevel("error");
+
+        revert = () => {
+            revertStdOut();
+            caipora.setLevel(defaultLevel);
+        };
     });
 
     after(() => revert());
@@ -28,13 +34,13 @@ describe("Performance", () => {
     it('should be more performatic than console if log level is disabled', () => {
         let consoleDelta = Date.now();
         for (let i=0; i < 1000; i++) {
-            console.debug("test");
+            console.info("test");
         }
         consoleDelta = Date.now() - consoleDelta;
 
         let caiporaDelta = Date.now();
         for (let i=0; i < 1000; i++) {
-            caipora.debug();
+            caipora.info();
         }
         caiporaDelta = Date.now() - caiporaDelta;
 
@@ -44,7 +50,7 @@ describe("Performance", () => {
     it('should be more performatic if complex parameters are lazily evaluated', () => {
         let eagerDelta = Date.now();
         for (let i=0; i < 10000; i++) {
-            caipora.debug(JSON.stringify({
+            caipora.info(JSON.stringify({
                 i,
                 max: 10000
             }));
@@ -53,7 +59,7 @@ describe("Performance", () => {
 
         let lazyDelta = Date.now();
         for (let i=0; i < 10000; i++) {
-            caipora.debug(() => JSON.stringify({
+            caipora.info(() => JSON.stringify({
                 i,
                 max: 10000
             }));
@@ -66,13 +72,13 @@ describe("Performance", () => {
     it('should not be more performatic if simple parameters are lazily evaluated', () => {
         let eagerDelta = Date.now();
         for (let i=0; i < 10000; i++) {
-            caipora.debug("test");
+            caipora.info("test");
         }
         eagerDelta = Date.now() - eagerDelta;
 
         let lazyDelta = Date.now();
         for (let i=0; i < 10000; i++) {
-            caipora.debug(() => "test");
+            caipora.info(() => "test");
         }
         lazyDelta = Date.now() - lazyDelta;
 
