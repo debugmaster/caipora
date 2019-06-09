@@ -63,9 +63,12 @@ Object.defineProperty(Caipora.prototype, '_logIfEnabled', {
 });
 
 ["trace", "debug", "info", "warn", "error"].forEach(function (level) {
-    Caipora.prototype[level] = function () {
-        this._logIfEnabled(level, arguments);
-    };
+    // Do not inherit methods that do not exist in the chain
+    if (_console.Console.prototype[level]) {
+        Caipora.prototype[level] = function () {
+            this._logIfEnabled(level, arguments);
+        };
+    }
 });
 
 Caipora.prototype.log = function () {
