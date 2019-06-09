@@ -31,7 +31,7 @@ Example:
 ```es6
 import * as console from "caipora";
 
-console.debug("Hello World!"); // It does anything
+console.debug("Hello World!"); // It does nothing
 console.setLevel("debug"); // It changed log level from "info" to "debug"
 console.debug("Hello World!"); // It outputs "Hello World!\n" on STDOUT
 ```
