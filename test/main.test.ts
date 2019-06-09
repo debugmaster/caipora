@@ -1,5 +1,6 @@
 import * as assert from "assert";
 import * as caipora from "../caipora";
+import * as utils from './utils';
 
 enum Result {
     NONE,
@@ -19,37 +20,37 @@ describe("Caipora", () => {
      * In order to test output, some strings are intercepted.
      */
     before(() => {
-        const stdoutWrite = process.stdout.write;
-        process.stdout.write = function () {
-            let first = arguments[0];
-            if (first) {
-                if (typeof(first) === "string" && first.includes("test")) {
-                    stdout++;
-                    // Remove UTF-8 color codes
-                    printedValue = first.replace(/\u001b\[.*?m/gu,"");
-                    return true;
-                }
-            }
-            return stdoutWrite.apply(process.stdout, arguments);
-        };
+        function isTestString(arg: any): boolean {
+            return arg &&
+                typeof arg === "string" &&
+                arg.includes("test");
+        }
 
-        const stderrWrite = process.stderr.write;
-        process.stderr.write = function () {
-            let first = arguments[0];
-            if (first) {
-                if (typeof(first) === "string" && first.includes("test")) {
-                    stderr++;
-                    // Remove UTF-8 color codes
-                    printedValue = first.replace(/\u001b\[.*?m/gu,"");
-                    return true;
-                }
+        const revertStdOut = utils.captureStdOut(
+            (args) => {
+                return isTestString(args[0]);
+            },
+            (args) => {
+                stdout++;
+                // Remove UTF-8 color codes
+                printedValue = args[0].replace(/\u001b\[.*?m/gu, "");
             }
-            return stderrWrite.apply(process.stderr, arguments);
-        };
+        );
+
+        const revertStderr = utils.captureStdErr(
+            (args) => {
+                return isTestString(args[0]);
+            },
+            (args) => {
+                stderr++;
+                // Remove UTF-8 color codes
+                printedValue = args[0].replace(/\u001b\[.*?m/gu, "");
+            }
+        );
 
         revert = () => {
-            process.stdout.write = stdoutWrite;
-            process.stderr.write = stderrWrite;
+            revertStdOut();
+            revertStderr();
         };
     });
 

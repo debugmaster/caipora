@@ -1,26 +1,26 @@
 import * as assert from "assert";
 import * as caipora from "../caipora";
+import * as utils from "./utils";
 
 describe("Performance", () => {
 
     let revert: () => void;
 
     before(() => {
-        const stdoutWrite = process.stdout.write;
-        process.stdout.write = function () {
-            let first = arguments[0];
-            if (first) {
-                // In order to avoid too many lines, nothing is printed.
-                if (typeof(first) === "string" && first === "test\n") {
-                    arguments[0] = "";
-                }
-            }
-            return stdoutWrite.apply(process.stdout, arguments);
-        };
+        const revertStdOut = utils.captureStdOut(
+            (args) => {
+                let first = args[0];
+                return first &&
+                    typeof first === "string" &&
+                    first === "test\n";
+            },
+            (args) => {
+                args[0] = "";
+            },
+            false
+        );
 
-        revert = () => {
-            process.stdout.write = stdoutWrite;
-        };
+        revert = revertStdOut;
     });
 
     after(() => revert());
