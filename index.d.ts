@@ -4,23 +4,28 @@ declare var caipora: Caipora;
 
 type LogLevel = "trace" | "debug" | "info" | "warn" | "error" | "silent";
 
-interface CaiporaConstructor {
-    prototype: Caipora;
-    new(stdout: NodeJS.WritableStream, stderr?: NodeJS.WritableStream, ignoreErrors?: boolean): Caipora;
-    new(options: NodeJS.ConsoleConstructorOptions): Caipora;
+type Caipora = CaiporaInterface & CaiporaConstructors;
+
+interface Constructor {
+    prototype: CaiporaInterface;
+    new(stdout: NodeJS.WritableStream, stderr?: NodeJS.WritableStream, ignoreErrors?: boolean): CaiporaInterface;
+    new(options: NodeJS.ConsoleConstructorOptions): CaiporaInterface;
 }
 
-interface Caipora {
+interface CaiporaConstructors {
     /**
      *  The Caipora class can be used to create a simple logger with configurable output streams.
      *  The default log level follows the
      */
-    Caipora: CaiporaConstructor;
+    Caipora: Constructor;
     /**
      * This is an alias of {@link Caipora} class. It is not the same as {@link console.Console}.
      * It is exported for compatibility reasons.
      */
-    Console: CaiporaConstructor;
+    Console: Constructor;
+}
+
+interface CaiporaInterface {
     /**
      * A simple assertion test that verifies whether `condition` is truthy.
      * If it is not, an `AssertionError` is printed.
