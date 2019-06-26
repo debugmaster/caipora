@@ -2,9 +2,8 @@ import * as assert from "assert";
 import { RevertCallback } from "./utils";
 
 function loadCaipora() {
-    delete require.cache[require.resolve("../caipora")];
-    delete require.cache[require.resolve("../constructor")];
-    return require("../caipora") as typeof import("../caipora");
+    delete require.cache[require.resolve("..")];
+    return require("..") as typeof import("..");
 }
 
 describe("Compatiblity", () => {

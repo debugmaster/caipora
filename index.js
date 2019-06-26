@@ -1,3 +1,5 @@
+"use strict";
+
 var _console = require("console");
 
 function init(instance) {
@@ -75,8 +77,22 @@ Caipora.prototype.log = function () {
     this._log("info", arguments);
 }
 
-module.exports = {
-    _console,
-    init,
-    Caipora
-}
+var caipora = Object.create(_console);
+
+Reflect.ownKeys(_console).forEach(function (prop) {
+    const desc = Reflect.getOwnPropertyDescriptor(_console, prop);
+    Reflect.defineProperty(caipora, prop, desc);
+});
+
+Reflect.ownKeys(Caipora.prototype).forEach(function (prop) {
+    if (prop === "constructor") { return; }
+    const desc = Reflect.getOwnPropertyDescriptor(Caipora.prototype, prop);
+    desc.value = desc.value.bind(caipora);
+    Reflect.defineProperty(caipora, prop, desc);
+});
+
+caipora.Console = caipora.Caipora = Caipora;
+
+init(caipora);
+
+module.exports = caipora;

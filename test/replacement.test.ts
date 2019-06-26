@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import * as caipora from "../caipora";
+import * as caipora from "..";
 
 describe("Console replacement", () => {
 
