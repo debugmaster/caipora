@@ -4,12 +4,12 @@ declare var caipora: Caipora;
 
 type LogLevel = "trace" | "debug" | "info" | "warn" | "error" | "silent";
 
-type Caipora = CaiporaInterface & CaiporaConstructors;
+type Caipora = CaiporaLogger & CaiporaConstructors;
 
 interface Constructor {
-    prototype: CaiporaInterface;
-    new(stdout: NodeJS.WritableStream, stderr?: NodeJS.WritableStream, ignoreErrors?: boolean): CaiporaInterface;
-    new(options: NodeJS.ConsoleConstructorOptions): CaiporaInterface;
+    prototype: CaiporaLogger;
+    new(stdout: NodeJS.WritableStream, stderr?: NodeJS.WritableStream, ignoreErrors?: boolean): CaiporaLogger;
+    new(options: NodeJS.ConsoleConstructorOptions): CaiporaLogger;
 }
 
 interface CaiporaConstructors {
@@ -25,7 +25,7 @@ interface CaiporaConstructors {
     Console: Constructor;
 }
 
-interface CaiporaInterface {
+interface CaiporaLogger {
     /**
      * A simple assertion test that verifies whether `condition` is truthy.
      * If it is not, an `AssertionError` is printed.
