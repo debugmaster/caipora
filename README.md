@@ -106,6 +106,8 @@ For compatibility reasons, caipora also export a `Console` class, but it is just
 
 ## Additional features
 
+#### Lazy evaluation
+
 Caipora does introduce lazy evaluation to log messages. It is recommended for any message that contains CPU-intensive computed parameters.
 
 In order to use this, pass a function that returns either a value or an array of values. It does support formatted messages when an array is used.
@@ -123,6 +125,41 @@ console.error(() => JSON.stringify(complexObject));
 
 console.error(() => ["Failed for %s", JSON.stringify(complexObject)]);
 // It outputs 'Failed for {"id":"ab23af96","timestamp":123456123}.' on STDERR
+```
+
+#### Cleaner Mocha results
+
+If you register `caipora` and set your log level to `silent` while running tests with [Mocha](https://mochajs.org/), you can supress all `console` messages from the output, making it cleaner.
+
+For example:
+```sh
+LOG_LEVEL=silent mocha --require caipora/register 'test/**/*.test.ts'
+```
+
+## Known limitations
+
+#### Imported console
+
+For instance, there is one scenario where the global `console` cannot be replaced by `caipora`: `console` was explicitly imported.
+
+```js
+var console = require("console");
+```
+or
+```es6
+import * as console from "console";
+```
+
+The only way to fix this is removing the import statement or replacing it with `caipora` instead.
+
+#### Interface CaiporaLogger is not exported
+
+Unfortunately, the library was developed to support contemporary and obsolete systems, which caused `export = module` to be used. You can work this limitation by doing this:
+
+```typescript
+import { Caipora } from "caipora";
+
+let logger: typeof Caipora.prototype;
 ```
 
 ## License
