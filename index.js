@@ -45,7 +45,7 @@ Caipora.prototype.getLevel = function () {
 Object.defineProperty(Caipora.prototype, '_log', {
     value: function (level, args) {
         if (args.length === 1 && typeof (args[0]) === "function") {
-            const computedArgs = args[0].call(undefined);
+            var computedArgs = args[0].call(undefined);
             if (Array.isArray(computedArgs)) {
                 _console.Console.prototype[level].apply(this, computedArgs);
             } else {
@@ -80,13 +80,13 @@ Caipora.prototype.log = function () {
 var caipora = Object.create(_console);
 
 Reflect.ownKeys(_console).forEach(function (prop) {
-    const desc = Reflect.getOwnPropertyDescriptor(_console, prop);
+    var desc = Reflect.getOwnPropertyDescriptor(_console, prop);
     Reflect.defineProperty(caipora, prop, desc);
 });
 
 Reflect.ownKeys(Caipora.prototype).forEach(function (prop) {
     if (prop === "constructor") { return; }
-    const desc = Reflect.getOwnPropertyDescriptor(Caipora.prototype, prop);
+    var desc = Reflect.getOwnPropertyDescriptor(Caipora.prototype, prop);
     desc.value = desc.value.bind(caipora);
     Reflect.defineProperty(caipora, prop, desc);
 });
