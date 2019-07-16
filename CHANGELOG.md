@@ -3,6 +3,10 @@
 ## v1.2.0
 ### Added
 - Add `register()` and `unregister()` to allow quick import of `caipora`.
+- Improved support to ES3 and ES5.
+- Improved documentation.
+### Changed
+- Renamed interface `CaiporaInterface` to `CaiporaLogger`.
 
 ## v1.1.2
 ### Fixed
