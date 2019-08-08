@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.2.1
+### Fixed
+- Fixed `register()` and `unregister()` for Node.js v6 and v8.
+
 ## v1.2.0
 ### Added
 - Add `register()` and `unregister()` to allow quick import of `caipora`.
