@@ -122,6 +122,14 @@ describe("Caipora", () => {
             revertLevel = () => caipora.setLevel(defaultLevel);
         });
 
+        beforeEach(function () {
+            if (this.currentTest &&
+                this.currentTest.title.endsWith("debug()") &&
+                process.version.startsWith('v6.')) {
+                this.skip();
+            }
+        });
+
         after(() => revertLevel());
 
         describe("silent level", () => {
