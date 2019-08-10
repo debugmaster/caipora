@@ -60,7 +60,7 @@ describe("Caipora", () => {
         stdout = stderr = Result.NONE;
     });
 
-    it ("should not interfere with regular logging", () => {
+    it("should not interfere with regular logging", () => {
         console.log("Hi from console!");
         caipora.log("Hi from caipora!");
 
@@ -68,11 +68,11 @@ describe("Caipora", () => {
         assert.strictEqual(stderr, Result.NONE);
     });
 
-    it ("should have 'info' as default level", () => {
+    it("should have 'info' as default level", () => {
         assert.strictEqual(caipora.getLevel(), "info");
     });
 
-    it ("should be able to create multiple loggers", () => {
+    it("should be able to create multiple loggers", () => {
         const anotherCaipora = new caipora.Caipora(
             process.stdout
         );
@@ -83,31 +83,31 @@ describe("Caipora", () => {
 
     describe("signatures", () => {
 
-        it ("allow multiple params", () => {
+        it("allow multiple params", () => {
             caipora.info(1000, "test", "multiple", "params", true);
 
             assert.strictEqual(printedValue, "1000 'test' 'multiple' 'params' true\n");
         });
 
-        it ("allow formatted message", () => {
+        it("allow formatted message", () => {
             caipora.info("%d This is a %s", 2000, "test");
 
             assert.strictEqual(printedValue, "2000 This is a test\n");
         });
 
-        it ("allow single value lazily", () => {
+        it("allow single value lazily", () => {
             caipora.info(() => "test");
 
             assert.strictEqual(printedValue, "test\n");
         });
 
-        it ("allow multiple values lazily", () => {
+        it("allow multiple values lazily", () => {
             caipora.info(() => [3000, "test", null]);
 
             assert.strictEqual(printedValue, "3000 'test' null\n");
         });
 
-        it ("allow formatted message lazily", () => {
+        it("allow formatted message lazily", () => {
             caipora.info(() => ["Another %s is needed!", "test"]);
 
             assert.strictEqual(printedValue, "Another test is needed!\n");
@@ -128,11 +128,11 @@ describe("Caipora", () => {
 
             before(() => caipora.setLevel("silent"));
 
-            it ("should be able to retrieve current level", () => {
+            it("should be able to retrieve current level", () => {
                 assert.strictEqual(caipora.getLevel(), "silent");
             });
 
-            it ("should always write with log()", () => {
+            it("should always write with log()", () => {
                 console.log("test0", "camilo");
                 caipora.log("test0");
 
@@ -140,7 +140,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should not write with error()", () => {
+            it("should not write with error()", () => {
                 console.error("test1");
                 caipora.error("test1");
 
@@ -148,7 +148,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.JUST_CONSOLE);
             });
 
-            it ("should not write with warn()", () => {
+            it("should not write with warn()", () => {
                 console.warn("test2");
                 caipora.warn("test2");
 
@@ -156,7 +156,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.JUST_CONSOLE);
             });
 
-            it ("should not write with info()", () => {
+            it("should not write with info()", () => {
                 console.info("test3");
                 caipora.info("test3");
 
@@ -164,7 +164,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should not write with debug()", () => {
+            it("should not write with debug()", () => {
                 console.debug("test4");
                 caipora.debug("test4");
 
@@ -172,7 +172,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should not write with trace()", () => {
+            it("should not write with trace()", () => {
                 console.trace("test5");
                 caipora.trace("test5");
 
@@ -185,11 +185,11 @@ describe("Caipora", () => {
 
             before(() => caipora.setLevel("error"));
 
-            it ("should be able to retrieve current level", () => {
+            it("should be able to retrieve current level", () => {
                 assert.strictEqual(caipora.getLevel(), "error");
             });
 
-            it ("should always write with log()", () => {
+            it("should always write with log()", () => {
                 console.log("test0");
                 caipora.log("test0");
 
@@ -197,7 +197,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should write with error()", () => {
+            it("should write with error()", () => {
                 console.error("test1");
                 caipora.error("test1");
 
@@ -205,7 +205,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.CONSOLE_AND_CAIPORA);
             });
 
-            it ("should not write with warn()", () => {
+            it("should not write with warn()", () => {
                 console.warn("test2");
                 caipora.warn("test2");
 
@@ -213,7 +213,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.JUST_CONSOLE);
             });
 
-            it ("should not write with info()", () => {
+            it("should not write with info()", () => {
                 console.info("test3");
                 caipora.info("test3");
 
@@ -221,7 +221,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should not write with debug()", () => {
+            it("should not write with debug()", () => {
                 console.debug("test4");
                 caipora.debug("test4");
 
@@ -229,7 +229,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should not write with trace()", () => {
+            it("should not write with trace()", () => {
                 console.trace("test5");
                 caipora.trace("test5");
 
@@ -242,11 +242,11 @@ describe("Caipora", () => {
 
             before(() => caipora.setLevel("warn"));
 
-            it ("should be able to retrieve current level", () => {
+            it("should be able to retrieve current level", () => {
                 assert.strictEqual(caipora.getLevel(), "warn");
             });
 
-            it ("should always write with log()", () => {
+            it("should always write with log()", () => {
                 console.log("test0");
                 caipora.log("test0");
 
@@ -254,7 +254,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should write with error()", () => {
+            it("should write with error()", () => {
                 console.error("test1");
                 caipora.error("test1");
 
@@ -262,7 +262,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.CONSOLE_AND_CAIPORA);
             });
 
-            it ("should write with warn()", () => {
+            it("should write with warn()", () => {
                 console.warn("test2");
                 caipora.warn("test2");
 
@@ -270,7 +270,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.CONSOLE_AND_CAIPORA);
             });
 
-            it ("should not write with info()", () => {
+            it("should not write with info()", () => {
                 console.info("test3");
                 caipora.info("test3");
 
@@ -278,7 +278,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should not write with debug()", () => {
+            it("should not write with debug()", () => {
                 console.debug("test4");
                 caipora.debug("test4");
 
@@ -286,7 +286,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should not write with trace()", () => {
+            it("should not write with trace()", () => {
                 console.trace("test5");
                 caipora.trace("test5");
 
@@ -299,11 +299,11 @@ describe("Caipora", () => {
 
             before(() => caipora.setLevel("info"));
 
-            it ("should be able to retrieve current level", () => {
+            it("should be able to retrieve current level", () => {
                 assert.strictEqual(caipora.getLevel(), "info");
             });
 
-            it ("should always write with log()", () => {
+            it("should always write with log()", () => {
                 console.log("test0");
                 caipora.log("test0");
 
@@ -311,7 +311,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should write with error()", () => {
+            it("should write with error()", () => {
                 console.error("test1");
                 caipora.error("test1");
 
@@ -319,7 +319,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.CONSOLE_AND_CAIPORA);
             });
 
-            it ("should write with warn()", () => {
+            it("should write with warn()", () => {
                 console.warn("test2");
                 caipora.warn("test2");
 
@@ -327,7 +327,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.CONSOLE_AND_CAIPORA);
             });
 
-            it ("should write with info()", () => {
+            it("should write with info()", () => {
                 console.info("test3");
                 caipora.info("test3");
 
@@ -335,7 +335,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should not write with debug()", () => {
+            it("should not write with debug()", () => {
                 console.debug("test4");
                 caipora.debug("test4");
 
@@ -343,7 +343,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should not write with trace()", () => {
+            it("should not write with trace()", () => {
                 console.trace("test5");
                 caipora.trace("test5");
 
@@ -356,11 +356,11 @@ describe("Caipora", () => {
 
             before(() => caipora.setLevel("debug"));
 
-            it ("should be able to retrieve current level", () => {
+            it("should be able to retrieve current level", () => {
                 assert.strictEqual(caipora.getLevel(), "debug");
             });
 
-            it ("should always write with log()", () => {
+            it("should always write with log()", () => {
                 console.log("test0");
                 caipora.log("test0");
 
@@ -368,7 +368,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should write with error()", () => {
+            it("should write with error()", () => {
                 console.error("test1");
                 caipora.error("test1");
 
@@ -376,7 +376,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.CONSOLE_AND_CAIPORA);
             });
 
-            it ("should write with warn()", () => {
+            it("should write with warn()", () => {
                 console.warn("test2");
                 caipora.warn("test2");
 
@@ -384,7 +384,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.CONSOLE_AND_CAIPORA);
             });
 
-            it ("should write with info()", () => {
+            it("should write with info()", () => {
                 console.info("test3");
                 caipora.info("test3");
 
@@ -392,7 +392,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should write with debug()", () => {
+            it("should write with debug()", () => {
                 console.debug("test4");
                 caipora.debug("test4");
 
@@ -400,7 +400,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should not write with trace()", () => {
+            it("should not write with trace()", () => {
                 console.trace("test5");
                 caipora.trace("test5");
 
@@ -413,11 +413,11 @@ describe("Caipora", () => {
 
             before(() => caipora.setLevel("trace"));
 
-            it ("should be able to retrieve current level", () => {
+            it("should be able to retrieve current level", () => {
                 assert.strictEqual(caipora.getLevel(), "trace");
             });
 
-            it ("should always write with log()", () => {
+            it("should always write with log()", () => {
                 console.log("test0");
                 caipora.log("test0");
 
@@ -425,7 +425,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should write with error()", () => {
+            it("should write with error()", () => {
                 console.error("test1");
                 caipora.error("test1");
 
@@ -433,7 +433,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.CONSOLE_AND_CAIPORA);
             });
 
-            it ("should write with warn()", () => {
+            it("should write with warn()", () => {
                 console.warn("test2");
                 caipora.warn("test2");
 
@@ -441,7 +441,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.CONSOLE_AND_CAIPORA);
             });
 
-            it ("should write with info()", () => {
+            it("should write with info()", () => {
                 console.info("test3");
                 caipora.info("test3");
 
@@ -449,7 +449,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should write with debug()", () => {
+            it("should write with debug()", () => {
                 console.debug("test4");
                 caipora.debug("test4");
 
@@ -457,7 +457,7 @@ describe("Caipora", () => {
                 assert.strictEqual(stderr, Result.NONE);
             });
 
-            it ("should write with trace()", () => {
+            it("should write with trace()", () => {
                 console.trace("test5");
                 caipora.trace("test5");
 

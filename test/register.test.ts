@@ -2,7 +2,7 @@ import * as assert from "assert";
 
 describe("Register and Unregister", () => {
 
-    it ("should change global console to caipora", () => {
+    it("should change global console to caipora", () => {
 
         assert.equal(console, require("console"));
         require("../register");
@@ -10,7 +10,7 @@ describe("Register and Unregister", () => {
 
     });
 
-    it ("should change global console to caipora", () => {
+    it("should change global console to caipora", () => {
         // This is a side-effect of the previous test.
         assert.equal(console, require(".."));
         require("../unregister");
