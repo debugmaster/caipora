@@ -23,7 +23,9 @@ function Caipora() {
 }
 
 Caipora.prototype = Object.create(_console.Console.prototype);
-Caipora.prototype.constructor = Caipora;
+Object.defineProperty(Caipora.prototype, "constructor", {
+    value: Caipora
+});
 
 Caipora.prototype.setLevel = function (level) {
     this._logLevels.trace = level === "trace";
@@ -42,7 +44,7 @@ Caipora.prototype.getLevel = function () {
         "silent"
 };
 
-Object.defineProperty(Caipora.prototype, '_log', {
+Object.defineProperty(Caipora.prototype, "_log", {
     value: function (level, args) {
         if (args.length === 1 && typeof (args[0]) === "function") {
             var computedArgs = args[0].call(undefined);
@@ -58,7 +60,7 @@ Object.defineProperty(Caipora.prototype, '_log', {
     }
 });
 
-Object.defineProperty(Caipora.prototype, '_logIfEnabled', {
+Object.defineProperty(Caipora.prototype, "_logIfEnabled", {
     value: function (level, args) {
         if (this._logLevels[level]) this._log(level, args);
     }
@@ -91,7 +93,11 @@ Reflect.ownKeys(Caipora.prototype).forEach(function (prop) {
     Reflect.defineProperty(caipora, prop, desc);
 });
 
-caipora.constructor = caipora.Console = caipora.Caipora = Caipora;
+caipora.Console = caipora.Caipora = Caipora;
+
+Object.defineProperty(caipora, "constructor", {
+    value: Caipora
+});
 
 init(caipora);
 
