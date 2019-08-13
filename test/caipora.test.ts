@@ -1,6 +1,8 @@
 import * as assert from "assert";
 import * as caipora from "..";
-import * as utils from './utils';
+import * as utils from "./utils";
+
+const nodeVersion = Number(process.versions.node.split(".")[0]);
 
 enum Result {
     NONE,
@@ -86,7 +88,13 @@ describe("Caipora", () => {
         it("allow multiple params", () => {
             caipora.info(1000, "test", "multiple", "params", true);
 
-            assert.strictEqual(printedValue, "1000 'test' 'multiple' 'params' true\n");
+            const result = "1000 'test' 'multiple' 'params' true\n";
+
+            if (nodeVersion < 12) {
+                assert.strictEqual(printedValue, result);
+            } else {
+                assert.strictEqual(printedValue, result.replace(/'/g,""));
+            }
         });
 
         it("allow formatted message", () => {
@@ -104,7 +112,12 @@ describe("Caipora", () => {
         it("allow multiple values lazily", () => {
             caipora.info(() => [3000, "test", null]);
 
-            assert.strictEqual(printedValue, "3000 'test' null\n");
+            const result = "3000 'test' null\n";
+            if (nodeVersion < 12) {
+                assert.strictEqual(printedValue, result);
+            } else {
+                assert.strictEqual(printedValue, result.replace(/'/g,""));
+            }
         });
 
         it("allow formatted message lazily", () => {
@@ -125,7 +138,7 @@ describe("Caipora", () => {
         beforeEach(function () {
             if (this.currentTest &&
                 this.currentTest.title.endsWith("debug()") &&
-                process.version.startsWith('v6.')) {
+                nodeVersion === 6) {
                 this.skip();
             }
         });
