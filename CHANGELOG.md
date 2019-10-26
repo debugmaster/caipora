@@ -1,6 +1,8 @@
 # Change Log
 
 ## v1.2.3
+### Added
+- Improve autocomplete by adding declaration files.
 ### Changed
 - Change `setLevel()` to be case insensitive.
 
