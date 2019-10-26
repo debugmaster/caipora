@@ -1,3 +1,4 @@
+/// <reference types="node" />
 export = caipora;
 
 declare var caipora: Caipora;
