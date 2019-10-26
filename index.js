@@ -28,6 +28,7 @@ Object.defineProperty(Caipora.prototype, "constructor", {
 });
 
 Caipora.prototype.setLevel = function (level) {
+    level = (level || "").toLowerCase();
     this._logLevels.trace = level === "trace";
     this._logLevels.debug = this._logLevels.trace || level === "debug";
     this._logLevels.info = this._logLevels.debug || level === "info";

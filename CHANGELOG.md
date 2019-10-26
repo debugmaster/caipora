@@ -1,5 +1,13 @@
 # Change Log
 
+## v1.2.3
+### Changed
+- Change `setLevel()` to be case insensitive.
+
+## v1.2.2
+### Changed
+- Hide constructor of Caipora.
+
 ## v1.2.1
 ### Fixed
 - Fixed `register()` and `unregister()` for Node.js v6 and v8.

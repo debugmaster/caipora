@@ -145,6 +145,21 @@ describe("Caipora", () => {
 
         after(() => revertLevel());
 
+        it("should set to silent if log level is not provided", () => {
+            caipora.setLevel(undefined as any);
+            assert.strictEqual(caipora.getLevel(), "silent");
+        });
+
+        it("should set to silent if log level is invalid", () => {
+            caipora.setLevel("invalid" as any);
+            assert.strictEqual(caipora.getLevel(), "silent");
+        });
+
+        it("should be case insensitive", () => {
+            caipora.setLevel("DEBUG" as "debug");
+            assert.strictEqual(caipora.getLevel(), "debug");
+        });
+
         describe("silent level", () => {
 
             before(() => caipora.setLevel("silent"));
