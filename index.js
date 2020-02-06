@@ -82,11 +82,6 @@ Caipora.prototype.log = function () {
 
 var caipora = Object.create(_console);
 
-Reflect.ownKeys(_console).forEach(function (prop) {
-    var desc = Reflect.getOwnPropertyDescriptor(_console, prop);
-    Reflect.defineProperty(caipora, prop, desc);
-});
-
 Reflect.ownKeys(Caipora.prototype).forEach(function (prop) {
     if (prop === "constructor") { return; }
     var desc = Reflect.getOwnPropertyDescriptor(Caipora.prototype, prop);
