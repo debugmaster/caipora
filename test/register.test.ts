@@ -10,7 +10,7 @@ describe("Register and Unregister", () => {
 
     });
 
-    it("should change global console to caipora", () => {
+    it("should change global caipora back to console", () => {
         // This is a side-effect of the previous test.
         assert.equal(console, require(".."));
         require("../unregister");

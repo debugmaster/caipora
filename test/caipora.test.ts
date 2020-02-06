@@ -2,8 +2,6 @@ import * as assert from "assert";
 import * as caipora from "..";
 import * as utils from "./utils";
 
-const nodeVersion = Number(process.versions.node.split(".")[0]);
-
 enum Result {
     NONE,
     JUST_CONSOLE,
@@ -90,7 +88,7 @@ describe("Caipora", () => {
 
             const result = "1000 'test' 'multiple' 'params' true\n";
 
-            if (nodeVersion < 12) {
+            if (utils.isOlderThanNode('12.0.0')) {
                 assert.strictEqual(printedValue, result);
             } else {
                 assert.strictEqual(printedValue, result.replace(/'/g,""));
@@ -113,7 +111,7 @@ describe("Caipora", () => {
             caipora.info(() => [3000, "test", null]);
 
             const result = "3000 'test' null\n";
-            if (nodeVersion < 12) {
+            if (utils.isOlderThanNode('12.0.0')) {
                 assert.strictEqual(printedValue, result);
             } else {
                 assert.strictEqual(printedValue, result.replace(/'/g,""));
@@ -138,7 +136,7 @@ describe("Caipora", () => {
         beforeEach(function () {
             if (this.currentTest &&
                 this.currentTest.title.endsWith("debug()") &&
-                nodeVersion === 6) {
+                utils.isOlderThanNode('8.10.0')) {
                 this.skip();
             }
         });

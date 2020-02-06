@@ -1,42 +1,85 @@
 import * as assert from "assert";
 import * as caipora from "..";
+import * as utils from "./utils";
 
 describe("Console replacement", () => {
 
-    it("same assert() function", () => {
-        assert.strictEqual(caipora.assert, console.assert);
+    describe("assert()", () => {
+
+        it("should be same function", () => {
+            assert.strictEqual(caipora.assert, console.assert);
+        });
+
+        it("should have same output", () => {
+            compare((logger) => logger.assert(true));
+            compare((logger) => logger.assert(false));
+            compare((logger) => logger.assert(false, 'hey'));
+        });
     });
 
-    it("same clean() function", () => {
+    it("same clear() function", () => {
         assert.strictEqual(caipora.clear, console.clear);
     });
 
-    it("same count() function", () => {
-        assert.strictEqual(caipora.count, console.count);
+    describe("count() and countReset()", () => {
+
+        it("should be same function", () => {
+            assert.strictEqual(caipora.count, console.count);
+            assert.strictEqual(caipora.countReset, console.countReset);
+        });
+
+        it("should have same output", () => {
+            compare((logger) => {
+                logger.count();
+                logger.countReset();
+                logger.count('test');
+                logger.count('test');
+                logger.countReset('test');
+                logger.count();
+                logger.countReset();
+            });
+        });
     });
 
-    it("same countReset() function", () => {
-        assert.strictEqual(caipora.countReset, console.countReset);
+    describe('dir() and dirxml()', () => {
+
+        it("should be same function", () => {
+            assert.strictEqual(caipora.dir, console.dir);
+            assert.strictEqual(caipora.dirxml, console.dirxml);
+        });
+
+        it("should have same output", () => {
+            compare((logger) => logger.dir(process.versions));
+            compare((logger) => logger.dirxml(process.versions));
+        });
     });
 
-    it("same dir() function", () => {
-        assert.strictEqual(caipora.dir, console.dir);
-    });
+    describe('group(), groupCollapsed(), and groupEnd()', () => {
 
-    it("same dirxml() function", () => {
-        assert.strictEqual(caipora.dirxml, console.dirxml);
-    });
+        beforeEach(function () {
+            if (this.currentTest && utils.isOlderThanNode('8.5.0')) {
+                this.skip();
+            }
+        });
 
-    it("same group() function", () => {
-        assert.strictEqual(caipora.group, console.group);
-    });
+        it("should be same function", () => {
+            assert.strictEqual(caipora.group, console.group);
+            assert.strictEqual(caipora.groupCollapsed, console.groupCollapsed);
+            assert.strictEqual(caipora.groupEnd, console.groupEnd);
+        });
 
-    it("same groupCollapsed() function", () => {
-        assert.strictEqual(caipora.groupCollapsed, console.groupCollapsed);
-    });
-
-    it("same groupEnd() function", () => {
-        assert.strictEqual(caipora.groupEnd, console.groupEnd);
+        it("should have same output", () => {
+            compare((logger) => {
+                logger.log(1);
+                logger.group(2);
+                logger.log(3);
+                logger.groupCollapsed();
+                logger.log(4);
+                logger.groupEnd()
+                logger.groupEnd()
+                logger.log(5)
+            });
+        });
     });
 
     it("same markTimeline() function", () => {
@@ -51,24 +94,65 @@ describe("Console replacement", () => {
         assert.strictEqual(caipora.profileEnd, console.profileEnd);
     });
 
-    it("same table() function", () => {
-        assert.strictEqual(caipora.table, console.table);
+    describe('table()', () => {
+
+        beforeEach(function () {
+            if (this.currentTest && utils.isOlderThanNode('10.0.0')) {
+                this.skip();
+            }
+        });
+
+        it("should be same function", () => {
+            assert.strictEqual(caipora.table, console.table);
+        });
+
+        it("should have same output", () => {
+            compare((logger) => {
+                logger.table(["apples", "oranges", "bananas"]);
+                logger.table([["John", "Smith"], ["Jane", "Doe"], ["Emily", "Jones"]]);
+            });
+        });
     });
 
-    it("same time() function", () => {
-        assert.strictEqual(caipora.time, console.time);
-    });
+    describe('time(), timeLog(), and timeEnd()', () => {
+        let hrtime: NodeJS.HRTime
 
-    it("same timeEnd() function", () => {
-        assert.strictEqual(caipora.timeEnd, console.timeEnd);
-    });
+        before(() => {
+            hrtime = process.hrtime;
+            let generator = function* generate() {
+                let i = 10;
+                let j = 1000;
+                while (true) {
+                    i++;
+                    yield [i % 5 * 100, i % 5 * 100]
+                }
+            }();
+            process.hrtime = (() => generator.next().value as [number, number]) as NodeJS.HRTime
+        });
 
-    it("same timeEnd() function", () => {
-        assert.strictEqual(caipora.timeEnd, console.timeEnd);
-    });
+        after(() => {
+            process.hrtime = hrtime
+        });
 
-    it("same timeLog() function", () => {
-        assert.strictEqual(caipora.timeLog, console.timeLog);
+        it("should be same function", () => {
+            assert.strictEqual(caipora.time, console.time);
+            assert.strictEqual(caipora.timeLog, console.timeLog);
+            assert.strictEqual(caipora.timeEnd, console.timeEnd);
+        });
+
+        it("should have the same output", () => {
+            compare((logger) => {
+                logger.time();
+                logger.time("test");
+                if (!utils.isOlderThanNode('10.7.0')) {
+                    logger.timeLog("test");
+                } else {
+                    process.hrtime();
+                }
+                logger.timeEnd();
+                logger.timeEnd("test");
+            })
+        })
     });
 
     it("same timeStamp() function", () => {
@@ -83,3 +167,42 @@ describe("Console replacement", () => {
         assert.strictEqual(caipora.timelineEnd, console.timelineEnd);
     });
 });
+
+type Logger = typeof import('..') | typeof import('console')
+
+function compare(testCallback: (logger: Logger) => void) {
+    let lastStdOut: string[];
+    let lastStdErr: string[];
+
+    const revertStdOut = utils.captureStdOut(
+        () => true,
+        (args) => lastStdOut.push(Array.from(args).slice(0, 1).pop()),
+        true
+    );
+    const revertStdErr = utils.captureStdErr(
+        () => true,
+        (args) => lastStdErr.push(Array.from(args).slice(0, 1).pop()),
+        true
+    );
+
+    const results = [caipora, console].map((logger) => {
+        lastStdOut = []
+        lastStdErr = []
+
+        let error
+        try {
+            testCallback.call(null, logger)
+        } catch (e) {
+            error = e
+        }
+
+        return [lastStdOut, lastStdErr, error]
+    })
+
+    revertStdOut();
+    revertStdErr();
+
+    assert.deepStrictEqual(results[0][0], results[1][0], 'stdout is not equal');
+    assert.deepStrictEqual(results[0][1], results[1][1], 'stderr is not equal');
+    assert.deepStrictEqual(results[0][2], results[1][2], 'thrown exception is not equal')
+};

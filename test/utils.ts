@@ -38,3 +38,15 @@ export function captureStdErr(
 ): RevertCallback {
     return captureOutput(process.stderr, condition, action, interceptWrite);
 }
+
+const nodeVersions = process.versions.node.split(".").map(Number);
+
+export function isOlderThanNode(version: string): boolean {
+    const versions = version.split('.').map(Number)
+
+    return computeScore(versions) > computeScore(nodeVersions)
+}
+
+function computeScore(version: number[]): number {
+    return 10000 * version[0] + 100 * version[1] + version[2]
+}
