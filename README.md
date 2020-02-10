@@ -12,14 +12,6 @@ npm install caipora
 
 If you are familiar with `console` and its methods, this library introduces two methods to take logging to *the next level*.
 
-### setLevel()
-
-By calling `caipora.setLevel(level)` or setting `LOG_LEVEL` environment variable, you are able to increase or decrease the amount of logs your application produces.
-
-### getLevel()
-
-If you want to check the current log level, you can get it with `caipora.getLevel()`.
-
 ### Supported log levels
 
 These log levels are supported: `trace`, `debug`, `info`, `warn`, `error`, and `silent`. They are defined from the smallest to the highest priority.
@@ -28,15 +20,29 @@ For example, setting to `warn` will disable `trace`, `debug`, and `info`.
 
 By default, `caipora` will set the log level to `info`.
 
-Log levels are case insensitive, thus `DEBUG` and `debug` mean the same log level.
+### New methods
 
-### Behavior of caipora.log()
+#### setLevel()
 
-`caipora.log()` is not affected by any log level. If you want to log a message regardless of the current log level, you should use it. It will print **even** if the current log level is `silent`.
+The method `setLevel(level)` is introduced to change the current log level. Its only argument `level` is case insensitive, thus calling it with `debug` or `DEBUG` will have the same outcome.
+
+It won't fail for an unknown level. It will assume the desired log level is `silent` instead.
+
+#### getLevel()
+
+The method `getLevel()` is introduced to retrieve the current log level. The returned value is one of the supported log levels listed above.
+
+It **always** returns a lowercased string. For example, if you invoked `setLevel()` with `DEBUG`, `getLevel()` will return `debug`.
+
+### Behavior of log()
+
+Similar to `console`, `caipora` has a method associated with each log level, thus `caipora.debug()` is associated with the `debug` level.
+
+If you want to log a message regardless of the current log level, you should use `log()`. It will always log **even** if the current log level is `silent`.
 
 ## How to use
 
-There are three ways to use this library:
+There are three ways to consume this library, which will be explained individually:
 - Replace `console` with `caipora` completely;
 - Import `caipora` wherever you need to add log levels;
 - Creating a customized logger with `caipora.Caipora`;
@@ -55,16 +61,16 @@ import "caipora/register";
 
 From now on, you can invoke any of the `console` or `caipora` methods directly from global `console`.
 
-Example:
+For example:
 ```es6
 import "caipora/register";
 
-console.debug("Hello World!"); // It does nothing
+console.debug("Hello World!"); // It does nothing because current level is "info"
 console.setLevel("debug"); // It changed log level from "info" to "debug"
-console.debug("Hello World!"); // It outputs "Hello World!\n" on STDOUT
+console.debug("Hello World!"); // It outputs "Hello World!\n" on the standard output (STDOUT)
 ```
 
-It also provides a way to revert the replacement. You should import `caipora/unregister` instead.
+It also provides a way to revert the replacement by importing `caipora/unregister` instead.
 
 ### Importing caipora selectively
 
@@ -78,7 +84,7 @@ or
 import * as console from "caipora";
 ```
 
-Please note that setting the level in a module will affect the others. Its behavior will be similar to the global `console` although it is scoped to the modules that it has been imported.
+Please note that setting the level in a module will affect the others. Its behavior is similar to the global `console` although it is scoped to the modules that it has been imported.
 
 Example:
 ```es6
@@ -101,7 +107,7 @@ For example:
 import { Caipora } from "caipora";
 
 let errorLogger = new Caipora(process.stderr);
-errorLogger.info("This message will go to the error log.");
+errorLogger.info("This message will go to the error output.");
 ```
 
 If you wonder what constructors are available, you should look at the official API of [Console](https://nodejs.org/docs/latest-v10.x/api/console.html#console_class_console).
@@ -110,7 +116,7 @@ For compatibility reasons, `caipora` also exports a `Console` class, but it is j
 
 ## Additional features
 
-#### Lazy evaluation
+### Lazy evaluation
 
 Caipora does introduce lazy evaluation to log messages. It is recommended for any message that contains CPU-intensive computed parameters.
 
@@ -131,39 +137,37 @@ console.error(() => ["Failed for %s", JSON.stringify(complexObject)]);
 // It outputs 'Failed for {"id":"ab23af96","timestamp":123456123}.' on STDERR
 ```
 
-#### Cleaner Mocha results
+### Cleaner results in tests reports
 
-If you require `caipora` and set your log level to `silent` while running tests with [Mocha](https://mochajs.org/), you can supress all `console` messages from the output, making it cleaner.
+If you require `caipora` and set your log level to `silent` while running tests with [Mocha](https://mochajs.org/) or [Jest](https://jestjs.io/), you can supress all `console` messages from the output, making it cleaner.
 
 For example:
 ```sh
-LOG_LEVEL=silent mocha --require caipora/register 'test/**/*.test.ts'
+LOG_LEVEL=silent mocha --require caipora/register 'test/**/*.test.js'
 ```
 
-## Known limitations
+### Typescript friendly
 
-#### Imported console
+This library defines all of its types. However, they are not acessible from regular `import` statements because it is a CommonJS module (in order to support some obsolete systems).
 
-For instance, there is one scenario where `console` cannot be replaced by `caipora`: `console` was explicitly imported like:
-
-```js
-var console = require("console");
-```
-or
-```es6
-import * as console from "console";
-```
-
-The only way to fix this is removing the import statement or replacing it with `caipora` instead.
-
-#### Interface CaiporaLogger is not exported
-
-Unfortunately, the library was developed to support contemporary and obsolete systems, which caused `export = module` to be used. You can work this limitation by doing this:
+If you need to explictly mention one of its types, you can access them from `caipora/types`. For example:
 
 ```typescript
-import { Caipora } from "caipora";
+import { Caipora } from "caipora"
+import { CaiporaLogger, LogLevel } from "caipora/types"
 
-let logger: typeof Caipora.prototype;
+// CaiporaLogger is an instance of Caipora
+let logger: CaiporaLogger;
+
+function createLogger(defaultLevel?: LogLevel) {
+    logger = new Caipora(process.stdout)
+    if (defaultLevel) logger.setLevel(defaultLevel)
+}
+
+function init() {
+    createLogger(process.env.NODEJS_LOG_LEVEL)
+    logger.debug('Created')
+}
 ```
 
 ## License

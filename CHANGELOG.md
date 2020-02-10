@@ -1,4 +1,11 @@
-# Change Log
+# Changelog
+
+## v1.3.0
+### Changed
+- Improve types.
+- Moved type definitions to a different file.
+### Fixed
+- Remove reflection of global console that breaks some methods
 
 ## v1.2.3
 ### Added
