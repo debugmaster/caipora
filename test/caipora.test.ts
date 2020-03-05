@@ -144,17 +144,17 @@ describe("Caipora", () => {
         after(() => revertLevel());
 
         it("should set to silent if log level is not provided", () => {
-            caipora.setLevel(undefined as any);
+            caipora.setLevel(undefined as unknown as caipora.LogLevel);
             assert.strictEqual(caipora.getLevel(), "silent");
         });
 
         it("should set to silent if log level is invalid", () => {
-            caipora.setLevel("invalid" as any);
+            caipora.setLevel("invalid");
             assert.strictEqual(caipora.getLevel(), "silent");
         });
 
         it("should be case insensitive", () => {
-            caipora.setLevel("DEBUG" as "debug");
+            caipora.setLevel("DEBUG");
             assert.strictEqual(caipora.getLevel(), "debug");
         });
 
@@ -167,7 +167,7 @@ describe("Caipora", () => {
             });
 
             it("should always write with log()", () => {
-                console.log("test0", "camilo");
+                console.log("test0");
                 caipora.log("test0");
 
                 assert.strictEqual(stdout, Result.CONSOLE_AND_CAIPORA);

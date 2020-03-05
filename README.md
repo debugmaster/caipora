@@ -148,23 +148,19 @@ LOG_LEVEL=silent mocha --require caipora/register 'test/**/*.test.js'
 
 ### Typescript friendly
 
-This library defines all of its types. However, they are not acessible from regular `import` statements because it is a CommonJS module (in order to support some obsolete systems).
-
-If you need to explictly mention one of its types, you can access them from `caipora/types`. For example:
+This library defines and exports all of its types. For example:
 
 ```typescript
-import { Caipora } from "caipora"
-import { CaiporaLogger, LogLevel } from "caipora/types"
+import { Caipora, LogLevel } from "caipora"
 
-// CaiporaLogger is an instance of Caipora
-let logger: CaiporaLogger;
+let logger: Caipora;
 
 function createLogger(defaultLevel?: LogLevel) {
     logger = new Caipora(process.stdout)
     if (defaultLevel) logger.setLevel(defaultLevel)
 }
 
-function init() {
+export function init() {
     createLogger(process.env.NODEJS_LOG_LEVEL)
     logger.debug('Created')
 }
