@@ -185,7 +185,12 @@ function compare(testCallback: (logger: Logger) => void) {
         true
     );
 
-    const results = [caipora, console].map((logger) => {
+    const results = [
+        caipora,
+        console,
+        new caipora.Caipora(process.stdout, process.stderr),
+        new console.Console(process.stdout, process.stderr)
+    ].map((logger) => {
         lastStdOut = []
         lastStdErr = []
 
@@ -205,4 +210,9 @@ function compare(testCallback: (logger: Logger) => void) {
     assert.deepStrictEqual(results[0][0], results[1][0], 'stdout is not equal');
     assert.deepStrictEqual(results[0][1], results[1][1], 'stderr is not equal');
     assert.deepStrictEqual(results[0][2], results[1][2], 'thrown exception is not equal')
+
+
+    assert.deepStrictEqual(results[2][0], results[3][0], 'stdout is not equal');
+    assert.deepStrictEqual(results[2][1], results[3][1], 'stderr is not equal');
+    assert.deepStrictEqual(results[2][2], results[3][2], 'thrown exception is not equal')
 };

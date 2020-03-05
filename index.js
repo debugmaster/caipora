@@ -17,8 +17,17 @@ function init(instance) {
 }
 
 function Caipora() {
-    _console.Console.apply(this, arguments);
-
+    var that = _console.Console.apply(this, arguments);
+    /* istanbul ignore if */
+    if (that) {
+        var keys = Object.getOwnPropertyNames(that)
+        keys = Object.getOwnPropertySymbols(that).concat(keys)
+        for (var i = 0; i < keys.length; i ++) {
+            if (!this[keys[i]]) {
+                this[keys[i]] = that[keys[i]]
+            }
+        }
+    }
     init(this);
 }
 

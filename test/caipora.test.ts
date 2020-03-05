@@ -72,14 +72,40 @@ describe("Caipora", () => {
         assert.strictEqual(caipora.getLevel(), "info");
     });
 
-    it("should be able to create multiple loggers", () => {
-        const anotherCaipora = new caipora.Caipora(
-            process.stdout
-        );
+    describe("custom loggers", () => {
 
-        anotherCaipora.setLevel("silent");
-        assert.notStrictEqual(anotherCaipora.getLevel(), caipora.getLevel());
-    });
+        it("should be able to create multiple loggers", () => {
+            assert.doesNotThrow(() => new caipora.Caipora(
+                process.stdout
+            ));
+        });
+
+        it("should maintain log level independently", () => {
+            const anotherCaipora = new caipora.Caipora(
+                process.stdout
+            );
+
+            anotherCaipora.setLevel("silent");
+            assert.notStrictEqual(anotherCaipora.getLevel(), caipora.getLevel());
+        });
+
+        it("should be able to log at all levels", () => {
+            const anotherCaipora = new caipora.Caipora(
+                process.stdout
+            );
+
+            anotherCaipora.setLevel("trace");
+
+            assert.doesNotThrow(() => anotherCaipora.trace('trace'));
+            if(!utils.isOlderThanNode('8.10.0')) {
+                assert.doesNotThrow(() => anotherCaipora.debug('debug'));
+            }
+            assert.doesNotThrow(() => anotherCaipora.info('info'));
+            assert.doesNotThrow(() => anotherCaipora.warn('warn'));
+            assert.doesNotThrow(() => anotherCaipora.error('error'));
+            assert.doesNotThrow(() => anotherCaipora.log('log'));
+        });
+    })
 
     describe("signatures", () => {
 
