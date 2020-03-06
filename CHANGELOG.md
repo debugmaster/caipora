@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.0
+### Changed
+- Move type definitions back to `index.d.ts` with different organization.
+### Fixed
+- Using custom loggers no longer throws an error in Node.js v11 or later.
+
 ## v1.3.0
 ### Changed
 - Improve types.
