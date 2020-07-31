@@ -18,7 +18,7 @@ function init(instance) {
 
 function Caipora() {
     var that = _console.Console.apply(this, arguments);
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (that) {
         var keys = Object.getOwnPropertyNames(that)
         keys = Object.getOwnPropertySymbols(that).concat(keys)
