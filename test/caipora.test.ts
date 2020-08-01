@@ -89,6 +89,20 @@ describe("Caipora", () => {
             assert.notStrictEqual(anotherCaipora.getLevel(), caipora.getLevel());
         });
 
+        it("should be able to create lazily", () => {
+            let anotherCaipora: caipora.Caipora;
+
+            function create() {
+                anotherCaipora = new caipora.Caipora(
+                    process.stdout
+                );
+            }
+
+            create();
+
+            anotherCaipora!.log(":)");
+        });
+
         it("should be able to log at all levels", () => {
             const anotherCaipora = new caipora.Caipora(
                 process.stdout
