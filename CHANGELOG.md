@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.4.1
+### Changed
+- Extend super instance with `Object.assign()`.
+
 ## v1.4.0
 ### Changed
 - Move type definitions back to `index.d.ts` with different organization.
